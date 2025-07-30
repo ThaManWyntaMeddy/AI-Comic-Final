@@ -1,0 +1,225 @@
+/* === BASE === */
+body {
+  font-family: 'Kanit', sans-serif;
+  background-color: #fffdf5;
+  color: #222;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  transition: background 0.5s, color 0.5s;
+}
+
+.dark-mode {
+  background-color: #121212;
+  color: #f0f0f0;
+}
+
+.container {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: auto;
+}
+
+/* === LOGO === */
+.logo {
+  width: 280px;
+  max-width: 80%;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+  margin-bottom: 1rem;
+  animation: fadeInDown 1s ease-out;
+}
+
+/* === HEADER TITLE === */
+h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  animation: fadeInDown 0.8s ease-out;
+
+  /* 🔥 Futuristic Gradient Text */
+  background: linear-gradient(to right, #ffd54f, #ff4081);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* === TOGGLES === */
+.toggle-buttons {
+  margin-bottom: 1.5rem;
+}
+
+.theme-toggle {
+  font-size: 0.9rem;
+  background: #eee;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 14px;
+  margin: 0 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.dark-mode .theme-toggle {
+  background: #333;
+  color: #fff;
+}
+
+/* === FORM === */
+form {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+input[type="text"] {
+  padding: 14px;
+  width: 60%;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.05);
+}
+
+/* === BUTTONS === */
+button {
+  padding: 14px 22px;
+  font-size: 1rem;
+  background-color: #ffd54f;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #ffc107;
+  transform: scale(1.05);
+}
+
+/* === COOL LOADING SPINNER === */
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1rem;
+  color: #555;
+  margin-top: 1.5rem;
+  animation: fadeInUp 0.8s ease;
+}
+
+.spinner-glow {
+  border: 5px solid #ddd;
+  border-top: 5px solid #ffd54f;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* === WARNINGS === */
+.warning {
+  color: #ff3333;
+  font-weight: bold;
+  margin-top: 1rem;
+  animation: pulse 1s infinite;
+}
+
+/* === COMIC PANELS === */
+.comic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 2rem;
+  padding: 0 1rem;
+}
+
+.comic-panel {
+  opacity: 0;
+  animation: fadeInOneByOne 0.6s ease forwards;
+}
+
+.comic-panel:nth-child(1) { animation-delay: 0.2s; }
+.comic-panel:nth-child(2) { animation-delay: 0.4s; }
+.comic-panel:nth-child(3) { animation-delay: 0.6s; }
+.comic-panel:nth-child(4) { animation-delay: 0.8s; }
+.comic-panel:nth-child(5) { animation-delay: 1s; }
+.comic-panel:nth-child(6) { animation-delay: 1.2s; }
+
+.comic-panel img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+
+.comic-panel img:hover {
+  transform: scale(1.03);
+}
+
+.dark-mode .comic-panel img:hover {
+  box-shadow: 0 0 12px 4px #00f7ff;
+  transform: scale(1.05);
+}
+
+/* === CAPTIONS === */
+.caption {
+  font-size: 0.9rem;
+  margin-top: 8px;
+  color: #555;
+  font-style: italic;
+}
+
+.dark-mode .caption {
+  color: #bbb;
+}
+
+/* === FOOTER === */
+.footer {
+  margin-top: 3rem;
+  padding: 1rem 0;
+  font-size: 0.95rem;
+  background: transparent;
+  color: #888;
+  font-style: italic;
+  text-align: center;
+  animation: fadeInUp 1s ease;
+}
+
+.dark-mode .footer {
+  color: #aaa;
+}
+
+/* === ANIMATIONS === */
+@keyframes fadeInDown {
+  0% { transform: translateY(-20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  0% { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeInOneByOne {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}

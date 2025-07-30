@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>📖 Comic Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Fonts & CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+
+  <!-- Audio -->
+  <audio id="clickSound" src="https://www.myinstants.com/media/sounds/button-click.mp3"></audio>
+  <audio id="bgMusic" src="{{ url_for('static', filename='music.mp3') }}" loop autoplay muted></audio>
+
+  <!-- Optional Background Video -->
+  <video autoplay muted loop id="bgVideo">
+    <source src="{{ url_for('static', filename='background.mp4') }}" type="video/mp4" />
+  </video>
+
+  <script>
+    const txt = "📖 Comic Generator — Turn any story into a 6-panel comic strip!";
+    let i = 0;
+    function typeWriter() {
+      if (i < txt.length) {
+        document.getElementById("typewriter").textContent += txt.charAt(i);
+        i++;
+        setTimeout(typeWriter, 45);
+      }
+    }
+
+    function toggleTheme() {
+      const body = document.body;
+      body.classList.toggle("dark-mode");
+      localStorage.setItem("theme", body.classList.contains("dark-mode") ? "dark" : "light");
+    }
+
+    function toggleMusic() {
+      const music = document.getElementById("bgMusic");
+      const button = document.getElementById("musicBtn");
+      if (music.paused) {
+        music.play();
+        button.textContent = "🔇 Music Off";
+      } else {
+        music.pause();
+        button.textContent = "🔊 Music On";
+      }
+    }
+
+    function playSound() {
+      const sound = document.getElementById("clickSound");
+      if (sound) sound.play();
+    }
+
+    function showLoading() {
+      const loading = document.getElementById("loading");
+      loading.style.display = "flex";
+    }
+
+    function generateRandomPrompt() {
+      const prompts = [
+        "A time traveler stuck in the dinosaur age",
+        "A cat running for mayor",
+        "A robot learning how to love",
+        "Two robots discovering friendship",
+        "A ninja babysitting a wild toddler",
+        "A superhero who loses their powers at night",
+        "Aliens mistaking Earth for a theme park",
+        "A dog with a secret detective life"
+      ];
+      const random = prompts[Math.floor(Math.random() * prompts.length)];
+      document.querySelector('input[name="prompt"]').value = random;
+      playSound();
+    }
+
+    window.onload = () => {
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark") document.body.classList.add("dark-mode");
+      document.getElementById("bgMusic").muted = false;
+      typeWriter();
+    };
+  </script>
+</head>
+<body>
+  <div class="container">
+    <!-- Logo -->
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="Comic Generator Logo" class="logo" />
+
+    <!-- Header -->
+    <header>
+      <h1 id="typewriter"></h1>
+      <div class="toggle-buttons">
+        <button onclick="toggleTheme()" class="theme-toggle">🌗 Toggle Theme</button>
+        <button onclick="toggleMusic()" class="theme-toggle" id="musicBtn">🔊 Music On</button>
+      </div>
+    </header>
+
+    <!-- Prompt Form -->
+    <form method="POST" onsubmit="showLoading(); playSound();">
+      <input type="text" name="prompt" value="{{ user_prompt }}" placeholder="e.g. A girl discovers she can fly" required autofocus />
+      <button type="submit">🎨 Generate Comic</button>
+      <button type="button" onclick="generateRandomPrompt()">🌀 Random Prompt</button>
+    </form>
+
+    <!-- Warnings -->
+    {% if safety_message %}
+      <p class="warning">🚫 {{ safety_message }}</p>
+    {% endif %}
+    {% if bias_message %}
+      <p class="warning">⚠️ {{ bias_message }}</p>
+    {% endif %}
+
+    <!-- Loading Spinner -->
+    <div id="loading" class="loading-spinner" style="display: none;">
+      <div class="spinner-glow"></div>
+      <p>✨ Creating your comic strip...</p>
+    </div>
+
+    <!-- Comic Panels -->
+    {% if image_urls %}
+      {% if "Error" in image_urls[0] %}
+        <p class="warning">⚠️ Failed to generate comic. Please try again!</p>
+      {% endif %}
+      <div class="comic-grid">
+        {% for url in image_urls %}
+          {% if "Error" in url %}
+            <div class="comic-panel error">⚠️ {{ url }}</div>
+          {% else %}
+            <div class="comic-panel">
+              <img src="{{ url }}" alt="Comic Panel" />
+              <p class="caption">Panel {{ loop.index }}</p>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>✨ Made with love by <strong>Wynter Medford</strong></p>
+    </footer>
+  </div>
+</body>
+</html>
